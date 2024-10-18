@@ -1,0 +1,21 @@
+FROM python:3.11
+
+WORKDIR /app
+
+COPY ./requirements.txt /app/requirements.txt
+
+RUN ls -l /app/requirements.txt
+
+
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+
+COPY . /app/
+
+# Copy .env file
+COPY .env /app/.env
+
+# Set environment variable to disable usage stats
+# ENV STREAMLIT_GATHER_USAGE_STATS=false
+
+
+CMD [ "streamlit","run", "app.py" ]
