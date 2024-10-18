@@ -13,6 +13,7 @@ from typing import Annotated, Sequence
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_core.messages import BaseMessage
 from langgraph.graph.message import add_messages
+from langchain_core.documents import Document
 
 
 memory = MemorySaver()
@@ -448,41 +449,28 @@ def chatbot_response_generation(question, retriever):
     inputs = {"question": question, 'retriever': retriever}
 
     for output in app.stream(inputs):
+        print("#################################\n")
+
+        print("#################################\n")
         for key, value in output.items():
             # Node
             pprint(f"Node '{key}':")
+            pprint(f"Documents: {value['documents']}")
             # Optional: print full state at each node
             # pprint.pprint(value["keys"], indent=2, width=80, depth=None)
         pprint("\n---\n")
 
     if 'generation' in value:  # Ensure 'generation' exists
         pprint(value["generation"])
-        return value["generation"]
+        return value["generation"],  value["documents"]
+
     else:
         pprint("No generation found.")
-        return "question is out of the context"
-
-
-
-# def chatbot_response_generation(retriever):
-
-#     while True:
-#       question = input('Enter your question (type "exit" to quit): ')
-#       if question == 'exit':
-#           break
-#       inputs = {"question": question, 'retriever': retriever}
-
-#       for output in app.stream(inputs):
-#           for key, value in output.items():
-#               # Node
-#               pprint(f"Node '{key}':")
-#               # Optional: print full state at each node
-#               # pprint.pprint(value["keys"], indent=2, width=80, depth=None)
-#           pprint("\n---\n")
-
-#       if 'generation' in value:  # Ensure 'generation' exists
-#           pprint(value["generation"])
-#           return value["generation"]
-#       else:
-#           pprint("No generation found.")
-#           return "question is out of the context"
+        return (
+            "question is out of the context",
+            Document(
+                page_content="",
+                metadata={
+                    'title':"",
+                }
+            ))

@@ -2,6 +2,8 @@ from backend.response_gen_model import chatbot_response_generation
 import streamlit as st
 from Data_Processing.pdf_ingestion import PdfIngestion
 from backend.vector_db_embedding import VectorStore, get_embedding_model
+from langgraph.errors import GraphRecursionError
+
 
 def main():
     st.title("Sample Set QA Bot")
@@ -30,17 +32,45 @@ def main():
         # Store the vector database in Streamlit session state
         st.session_state.vector_db = vector_store.store_vector_embedding_to_pinecone(flattened_list_doc)
 
-    # Check if vector_db is in session state
-    if 'vector_db' in st.session_state:
-        question = st.text_input("Enter Your Question", key="question")
+    # Initialize chat history
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
 
-        if question:
-            # Generate the response once a question is submitted
-            retriever = st.session_state.vector_db.as_retriever()
-            response = chatbot_response_generation(question=question, retriever=retriever)
-            st.write("Chatbot Response:", response)
-    else:
-        st.info("Please upload a file and submit it to initialize the vector database.")
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+
+    if 'vector_db' in st.session_state:
+        retriever = st.session_state.vector_db.as_retriever()
+
+        if question := st.chat_input("Enter Your Question?"):
+
+            st.session_state.messages.append({"role": "user", "content": question})
+
+            try:
+                response, retrieved_documents = chatbot_response_generation(question=question, retriever=retriever)
+
+                with st.chat_message("assistant"):
+                    st.markdown(response)
+                # Add assistant response to chat history
+                st.session_state.messages.append({"role": "assistant", "content": response})
+
+
+                # Display the retrieved documents in the sidebar
+                st.sidebar.title("Retrieved Documents")
+                for doc in retrieved_documents:
+                    # You can choose to display document metadata or a snippet of the document content
+                    # st.sidebar.markdown(f"**Content:** {doc.page_content}...")  # Show first 200 characters
+                    st.sidebar.markdown(f"**Content:** {doc}...")
+                    st.sidebar.markdown("---")
+
+            except GraphRecursionError as e:
+                with st.chat_message("assistant"):
+                    st.markdown(f"Error Not Related to docs ")
+                # Add assistant response to chat history
+                st.session_state.messages.append({"role": "assistant", "content": f"Error Not Related to docs "})
+                # st.error("Error: Graph recursion limit reached. Please try again later or contact support.")
 
 # Run the main function
 if __name__ == "__main__":
