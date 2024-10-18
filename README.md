@@ -147,4 +147,4 @@ docker rm <container_name>
 
 ---
 
-This `README.md` file provides all necessary steps to run the FastAPI application using Docker, 
+This `README.md` file provides all necessary steps to run the streamlit application using Docker and local development, 
