@@ -139,6 +139,10 @@ To remove the Docker container after stopping it:
 docker rm <container_name>
 ```
 
+## Demo Example Screenshot
+
+<img src="sample_set.png" alt="screenshot of project"/>
+
 
 ## Built With
 
