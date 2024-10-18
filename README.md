@@ -26,17 +26,18 @@ For easy integration and Development i have used the Docker Contanarization for 
     │   │
     │   ├── main.py              
     │   ├── requirements.txt      
-    │   ├── .env                 
-    │   ├── config.py            # Configuration settings
-    │   ├── logging.py           # Logging setup
+    │   ├── .env
+    |   |__ Dockerfile                   
     │   └── ...                                   
     │                
-    ├── Dockerfile             
+    ├──            
     └── README.md
+    ├── .gitignore
+    ├── sample_set.png
     │
     ├── /docs/                 
     │   ├── Gen AI Assignment.pdf           
-    │   └── project.pdf             
+    │   └── sample_set report.pdf             
     
     '''
 
