@@ -7,6 +7,17 @@
 For easy integration and Development i have used the Docker Contanarization for easy deployment 
 </p>
 
+## For Demo Visit URL: 
+
+Application is Deployed on Streamlit Cloud Below is web url
+
+## <a href = "https://samplesetrag.streamlit.app/">For Demo Visit</a>
+
+
+## Demo Example Screenshot
+
+<img src="sample_set.png" alt="screenshot of project"/>
+
 ## Directory Structure
 
     '''
@@ -139,10 +150,6 @@ To remove the Docker container after stopping it:
 ```bash
 docker rm <container_name>
 ```
-
-## Demo Example Screenshot
-
-<img src="sample_set.png" alt="screenshot of project"/>
 
 
 ## Built With
