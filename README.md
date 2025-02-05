@@ -47,7 +47,7 @@ Application is Deployed on Streamlit Cloud Below is web url
     ├── sample_set.png
     │
     ├── /docs/                 
-    │   ├── Gen AI Assignment.pdf           
+    │   ├── Gen AI requirements.pdf           
     │   └── sample_set report.pdf             
     
     '''
