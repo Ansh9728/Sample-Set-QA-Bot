@@ -52,6 +52,11 @@ Application is Deployed on Streamlit Cloud Below is web url
     
     '''
 
+## RAG WORKFLOW DIAGRAM
+
+<img src="https://github.com/user-attachments/assets/1b612a0b-59e1-4b67-bf1b-bd9740e792da" width="700" />
+
+
 ## How to Run The Application
 
 
