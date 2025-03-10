@@ -19,7 +19,7 @@ from langchain_core.documents import Document
 memory = MemorySaver()
 
 
-def get_llm_model(model="llama3-70b-8192"):
+def get_llm_model(model="llama-3.3-70b-versatile"):
     model = ChatGroq(
         temperature=0,
         model=model,
@@ -103,7 +103,7 @@ def grade_documents(state):
         binary_score: str = Field(description="Relevance score 'yes' or 'no'")
 
 
-    model = get_llm_model(model="llama3-groq-70b-8192-tool-use-preview")
+    model = get_llm_model(model="llama-3.3-70b-versatile")
 
     llm_with_tool = model.with_structured_output(grade)
 
