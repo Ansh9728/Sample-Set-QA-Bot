@@ -130,44 +130,48 @@ import tempfile
 from langchain.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import TextLoader
 from langchain_community.document_loaders import UnstructuredExcelLoader
-
+    
 class FileIngestion:
     def __init__(self, uploaded_files):
-        """
-        uploaded_files: a list of file-like objects (e.g., from a file uploader)
-        """
         self.uploaded_files = uploaded_files
         self.documents = []
 
     def load_files(self):
         """
-        Load files of various types (PDF, CSV, Excel, and text)
-        using LangChain's document loaders.
+        Load files of various types (PDF, Excel, CSV, and text)
+        from the uploaded_files list.
         """
         for file_obj in self.uploaded_files:
-            # Determine file extension (in lowercase)
+            # Get file extension (lowercase)
             file_ext = os.path.splitext(file_obj.name)[1].lower()
-            
-            # Write the uploaded file content to a temporary file
+
+            # Create a temporary file with the same extension
             with tempfile.NamedTemporaryFile(delete=False, suffix=file_ext) as temp_file:
                 temp_file.write(file_obj.read())
                 temp_file.flush()
-            
-            # Choose the appropriate loader based on the file extension
+
+            # Process file based on its extension
             if file_ext == '.pdf':
                 loader = PyPDFLoader(temp_file.name)
-            elif file_ext == '.csv':
-                loader = CSVLoader(file_path=temp_file.name)
+                loaded = loader.load()  # returns a list of LangChain Document objects
+                self.documents.append(loaded)
+            elif file_ext in ['.csv']:
+                # df = pd.read_csv(temp_file.name)
+                csv_loader = CSVLoader(temp_file.name)
+                loaded = csv_loader.load()  # now returns a list of Document objects
+                self.documents.append(loaded)
             elif file_ext in ['.xls', '.xlsx']:
-                loader = UnstructuredExcelLoader(file_path=temp_file.name)
-            elif file_ext == '.txt':
-                loader = TextLoader(file_path=temp_file.name)
+                df = pd.read_excel(temp_file.name)
+                self.documents.append(df)
+            elif file_ext in ['.txt']:
+                # with open(temp_file.name, 'r', encoding='utf-8') as f:
+                #     text = f.read()
+                # self.documents.append(text)
+                txt_loader = TextLoader(temp_file.name)
+                loaded = txt_loader.load()
+                self.documents.append(loaded)
             else:
                 print(f"Unsupported file type: {file_ext}")
-                continue
-            
-            # Load the document(s) and extend the list
-            docs = loader.load()
-            self.documents.extend(docs)
-        
+        print("docs", self.documents)
         return self.documents
+
