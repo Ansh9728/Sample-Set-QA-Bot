@@ -14,14 +14,18 @@ def main():
     # Handle file uploads
     uploaded_files = st.file_uploader(
         "Upload Your File",
-        type=['pdf'],
+        # type=['pdf'],
+        type=['pdf', 'csv', 'txt'],
         accept_multiple_files=True,
     )
 
     # Check if "Submit" button is clicked and files are uploaded
     if st.button("Submit") and uploaded_files:
-        pdf_ingestion = PdfIngestion(uploaded_files)
-        pdf_langchain_document = pdf_ingestion.load_pdf()
+        # pdf_ingestion = PdfIngestion(uploaded_files)
+        # pdf_langchain_document = pdf_ingestion.load_pdf()
+
+        ingestion = FileIngestion(uploaded_files)
+        pdf_langchain_document = ingestion.load_files()
 
         # Flatten the list of documents
         flattened_list_doc = [element for sublist in pdf_langchain_document for element in sublist]
