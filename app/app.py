@@ -1,6 +1,6 @@
 from backend.response_gen_model import chatbot_response_generation
 import streamlit as st
-from Data_Processing.pdf_ingestion import PdfIngestion
+from Data_Processing.pdf_ingestion import PdfIngestion, FileIngestion
 from backend.vector_db_embedding import VectorStore, get_embedding_model
 from langgraph.errors import GraphRecursionError
 
@@ -21,11 +21,11 @@ def main():
 
     # Check if "Submit" button is clicked and files are uploaded
     if st.button("Submit") and uploaded_files:
-        pdf_ingestion = PdfIngestion(uploaded_files)
-        pdf_langchain_document = pdf_ingestion.load_pdf()
+        # pdf_ingestion = PdfIngestion(uploaded_files)
+        # pdf_langchain_document = pdf_ingestion.load_pdf()
 
-        # ingestion = FileIngestion(uploaded_files)
-        # pdf_langchain_document = ingestion.load_files()
+        ingestion = FileIngestion(uploaded_files)
+        pdf_langchain_document = ingestion.load_files()
 
         # Flatten the list of documents
         flattened_list_doc = [element for sublist in pdf_langchain_document for element in sublist]
