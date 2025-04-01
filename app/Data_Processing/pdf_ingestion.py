@@ -99,6 +99,7 @@ from langchain_community.document_loaders import PyPDFLoader
 import tempfile
 import os
 import pandas as pd
+from langchain_community.document_loaders.csv_loader import CSVLoader
 
 class PdfIngestion:
     def __init__(self, uploaded_files):
@@ -126,7 +127,9 @@ class PdfIngestion:
 
 import os
 import tempfile
-from langchain.document_loaders import PyPDFLoader, CSVLoader, TextLoader, UnstructuredExcelLoader
+from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import TextLoader
+from langchain_community.document_loaders import UnstructuredExcelLoader
 
 class FileIngestion:
     def __init__(self, uploaded_files):
