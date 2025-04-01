@@ -1,6 +1,6 @@
 from backend.response_gen_model import chatbot_response_generation
 import streamlit as st
-from Data_Processing.pdf_ingestion import PdfIngestion
+from Data_Processing.pdf_ingestion import PdfIngestion, FileIngestion
 from backend.vector_db_embedding import VectorStore, get_embedding_model
 from langgraph.errors import GraphRecursionError
 
